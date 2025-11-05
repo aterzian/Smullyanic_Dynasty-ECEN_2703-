@@ -1,0 +1,34 @@
+
+from z3 import *
+
+def set_cover(Ca):
+    # Construct universe A
+    A = sorted({a for subset in Ca for a in subset})
+    n = len(Ca)
+
+    # Create one Bool variable per subset
+    x = [Bool(f"x{i}") for i in range(n)]
+
+    opt = Optimize()
+
+    # Every element in A must be covered
+    for a in A:
+        opt.add(Or([x[i] for i, subset in enumerate(Ca) if a in subset]))
+
+    # Minimize number of subsets used
+    opt.minimize(Sum([If(v, 1, 0) for v in x]))
+
+    if opt.check() == sat:
+        model = opt.model()
+        return [i for i in range(n) if model[x[i]]]
+    else:
+        return None
+
+
+if __name__ == '__main__':
+    Ca = [
+        {0,1,3,4}, {1,2,3}, {2,5,6}, {3,4,7}, {1,2},
+        {2,3}, {2,5}, {2,6}, {5,6}, {3,7}, {0,6}, {5}
+    ]
+    result = set_cover(Ca)
+    print(result)
