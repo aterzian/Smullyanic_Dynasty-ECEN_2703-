@@ -95,7 +95,7 @@ def solve_and_print(grid: Sequence[Sequence[Optional[int]]],
     if num_solutions == 0:
         print("# No solution found")
     else:
-        print(f"# Total weak solutions found: {num_solutions}")
+        print(f"# Total solutions found: {num_solutions}")
 
 def absent_edge(a: Sequence[BoolRef]) -> BoolRef:
     """Return constraint for absent edge."""
